@@ -1,0 +1,100 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ConsoleApp9
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            Random rand = new Random();
+
+            int tamaño = 100;
+            int[] numeros = new int[tamaño];
+
+            for (int i = 0; i < tamaño; i++)
+            {
+                numeros[i] = rand.Next(1, 101);
+            }
+
+            string[] nombresBase = { "Noemí", "Noelia", "Andrés", "Emilio", "Norberto", "Estefanía", "Daniela", "Valeria" };
+
+            string[] nombresAleatorios = new string[tamaño];
+
+            for (int i = 0; i < tamaño; i++)
+            {
+                int pos = rand.Next(nombresBase.Length);
+                nombresAleatorios[i] = nombresBase[pos];
+            }
+
+            Console.WriteLine("Listado original");
+            for (int i = 0; i < tamaño; i++)
+            {
+                Console.WriteLine($"Indice: {i}, Numero: {numeros[i]}, Nombre: {nombresAleatorios[i]}");
+            }
+
+            Burbuja(numeros, nombresAleatorios);
+            Console.WriteLine("\nListado ordenado por numero (burbuja):");
+            for (int i = 0; i < tamaño; i++)
+            {
+                Console.WriteLine($"Índice: {i}, Número: {numeros[i]}, Nombre: {nombresAleatorios[i]}");
+            }
+        }
+
+        static void Burbuja(int[] numeros, string[] nombres)
+        {
+            int n = numeros.Length;
+            for (int i = 0; i < n - 1; i++)
+            {
+                for (int j = 0; j < n - 1; j++)
+                {
+                    if (numeros[j] > numeros[j + 1])
+                    {
+                        int temp = numeros[j];
+                        numeros[j] = numeros[j + 1];
+                        numeros[j + 1] = temp;
+
+                        string tempNombre = nombres[j];
+                        nombres[j] = nombres[j + 1];
+                        nombres[j + 1] = tempNombre;
+                    }
+                }
+            }
+        }
+
+        static void QuickSort(int[] numeros, string[] nombres, int izquierda, int derecha)
+        {
+            int i = izquierda;
+            int j = derecha;
+            int pivote = numeros[(izquierda + derecha) / 2];
+
+            while (i <= j)
+            {
+                while (numeros[i] < pivote) i++;
+                while (numeros[j] > pivote) j--;
+
+                if (i <= j)
+                {
+                    int temp = numeros[i];
+                    numeros[i] = numeros[j];
+                    numeros[j] = temp;
+
+                    string tempNombre = nombres[i];
+                    nombres[i] = nombres[j];
+                    nombres[j] = tempNombre;
+
+                    i++;
+                    j--;
+                }
+            }
+
+            if (izquierda < j)
+                QuickSort(numeros, nombres, izquierda, j);
+            if (i < derecha)
+                QuickSort(numeros, nombres, i, derecha);
+        }
+    }
+}
