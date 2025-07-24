@@ -1,0 +1,124 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ConsoleApp8
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            Random rand = new Random();
+
+            int cantidad = rand.Next(10, 101);
+            int[] arregloOriginal = new int[cantidad];
+
+            for (int i = 0; i < cantidad; i++)
+            {
+                arregloOriginal[i] = rand.Next(0, 201);
+            }
+
+            Console.WriteLine("Arreglo original:");
+            for (int i = 0; i < cantidad; i++)
+            {
+                Console.Write($"{i}:{arregloOriginal[i]} ");
+            }
+            Console.WriteLine();
+
+            int[] burbuja = (int[])arregloOriginal.Clone();
+            for (int i = 0; i < burbuja.Length - 1; i++)
+            {
+                for (int j = 0; j < burbuja.Length - i - 1; j++)
+                {
+                    if (burbuja[j] < burbuja[j + 1])
+                    {
+                        int temp = burbuja[j];
+                        burbuja[j] = burbuja[j + 1];
+                        burbuja[j + 1] = temp;
+                    }
+                }
+            }
+
+            Console.WriteLine("\nOrdenado con Burbuja (mayor a menor):");
+            for (int i = 0; i < burbuja.Length; i++)
+            {
+                Console.Write($"{i}:{burbuja[i]} ");
+            }
+            Console.WriteLine();
+
+            int[] quicksort = (int[])arregloOriginal.Clone();
+
+            int izquierda = 0;
+            int derecha = quicksort.Length - 1;
+
+            void QuickSort()
+            {
+                void Ordenar(int izq, int der)
+                {
+                    int i = izq, j = der;
+                    int pivote = quicksort[(izq + der) / 2];
+
+                    while (i <= j)
+                    {
+                        while (quicksort[i] < pivote) i++;
+                        while (quicksort[j] > pivote) j--;
+
+                        if (i <= j)
+                        {
+                            int temp = quicksort[i];
+                            quicksort[i] = quicksort[j];
+                            quicksort[j] = temp;
+                            i++;
+                            j--;
+                        }
+                    }
+
+                    if (izq < j) Ordenar(izq, j);
+                    if (i < der) Ordenar(i, der);
+                }
+
+                Ordenar(izquierda, derecha);
+            }
+
+            QuickSort();
+
+            Console.WriteLine("\nOrdenado con Quicksort (menor a mayor):");
+            for (int i = 0; i < quicksort.Length; i++)
+            {
+                Console.Write($"{i}:{quicksort[i]} ");
+            }
+            Console.WriteLine();
+
+            int valorBuscado = rand.Next(0, 201);
+            Console.WriteLine($"\nValor buscado: {valorBuscado}");
+
+            int posicion = -1;
+            for (int i = 0; i < arregloOriginal.Length; i++)
+            {
+                if (arregloOriginal[i] == valorBuscado)
+                {
+                    posicion = i;
+                    break;
+                }
+            }
+
+            if (posicion != -1)
+            {
+                Console.WriteLine($"Valor encontrado en la posición {posicion}");
+            }
+            else
+            {
+                Console.WriteLine("Número no encontrado");
+            }
+
+            Console.WriteLine("\nArreglo original (sin modificar):");
+            for (int i = 0; i < arregloOriginal.Length; i++)
+            {
+                Console.Write($"{i}:{arregloOriginal[i]} ");
+            }
+            Console.WriteLine();
+        }
+    }
+}
